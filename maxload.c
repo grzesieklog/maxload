@@ -38,8 +38,12 @@ void _sigchild(int sig)
 		{
 			exit (0);
 		}
+		else if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == 15 || WTERMSIG(status) == 9) exit(EXIT_FAILURE);
+		}
 	}
-	if (ch) ch=0;
+	if (ch) ch=0; 
 }
 
 int main (int argc, char *argv[])
@@ -87,8 +91,7 @@ int main (int argc, char *argv[])
 			{
 				if ( avg_sav < avg[0] ) { loadheight=1; loadlow=0; }
 				if ( avg_sav > avg[0] ) { loadheight=0; loadlow=1; }
-				if ( loadheight ) sec = 5;
-				else sec = 5;
+				sec = 5;
 
 				if ( n+1 <= 3 && loadheight )
 				{
@@ -120,12 +123,11 @@ int main (int argc, char *argv[])
 				kill(comm,SIGSTOP); //printf("\nSTOP");
 				continue;
 			}
-			if ( avg[0] <= 0.25*loadborder )
-				sec = 10;
-			if ( avg[0] <= 0.10*loadborder )
-				sec = 15;
-			else
-				sec = 5;
+			sec = 5;
+			if ( avg[0] <= 0.25*loadborder ) sec = 10;
+			if ( avg[0] <= 0.10*loadborder ) sec = 15;
+
+
 			continue;
 		}
 		if (stop && avg[0] < loadborder)
