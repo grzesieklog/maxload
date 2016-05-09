@@ -17,12 +17,16 @@ In this case `maxload` have border `1.9` and run command `./backup.sh /home`.
 
 ##Proper border
 The most important things is to set proper border value. This value is depend of the CPU cores number which you have in your system. You can check this by command: `top`, `cat /proc/cpuinfo` or `nproc`.
+
 One CPU core means maximum 1 value of system load, value bigger on 1 means your system is overloads. So if you have two cores the maximum load is 2, for four cores it's 4.
+
 Suppose you have two CPU cores and you have run backup script until system is not overload. If you set border on `2` maxload start work when overload is occurs, and users can experiencing the overload. To avoid this you must set border less then maximum load e.g. `1.9`.
 
 #Demonstration video
 You can see how `maxload` works on this video [how works maxload](https://youtu.be/IwpuLnNWhrY)
 
 #FAQ
-1. which value of system load averages is used in `maxload`: 1, 5, 15 minutes?
-Q: 5 minutes.
+1. Which value of system load averages is used in `maxload`: 1, 5, 15 minutes?
+
+  **A:** 5 minutes.
+
