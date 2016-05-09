@@ -22,11 +22,11 @@ One CPU core means maximum 1 value of system load, value bigger on 1 means your 
 
 Suppose you have two CPU cores and you have run backup script until system is not overload. If you set border on `2` maxload start work when overload is occurs, and users can experiencing the overload. To avoid this you must set border less then maximum load e.g. `1.9`.
 
-#Demonstration video
+##Demonstration video
 You can see how `maxload` works on this video [how works maxload](https://youtu.be/IwpuLnNWhrY)
 
-#FAQ
-1. Which value of system load averages is used in `maxload`: 1, 5, 15 minutes?
+##FAQ
+###Which value of system load averages is used in `maxload`: 1, 5, 15 minutes?
 
-  **A:** 5 minutes.
+5 minutes.
 
