@@ -5,7 +5,7 @@ In intention it is a Unix shell command which run other task, like `nice` comman
 Some of task are very resource intensive, on the other hand system load is changing over time. The best practice is running intensive task in time when system load is be low. The `maxload` tool trying solve this problem by continuous monitoring system load and dynamically controls process priority. In example, if you do backups on your server in the night when usually system is not busy the task will by run normaly. But when some of service will begin working and generate heigth system load the `maxload` will release resources used by his controlled process (not memory). When system load will drop to low level the controlled process will by starts again, even `maxload` can restore the normal priority of controlled process if it's possible (run as `root`).
 
 #How to use `maxload`
-`maxload` have simple syntax:
+`maxload` has simple syntax:
 ```
 maxload [load] [command] [args ...]
 ```
@@ -13,7 +13,7 @@ You need two things to run `maxload`, max load border `[load]` and command you w
 ```
 maxload 1.9 ./backup.sh /home
 ```
-In this case `maxload` have border `1.9` and run command `./backup.sh /home`.
+In this case `maxload` has border `1.9` and run command `./backup.sh /home`.
 
 ##Proper border
 The most important things is to set proper border value. This value is depend of the CPU cores number which you have in your system. You can check this by command: `top`, `cat /proc/cpuinfo` or `nproc`.
