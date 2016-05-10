@@ -18,15 +18,49 @@ In this case `maxload` have border `1.9` and run command `./backup.sh /home`.
 ##Proper border
 The most important things is to set proper border value. This value is depend of the CPU cores number which you have in your system. You can check this by command: `top`, `cat /proc/cpuinfo` or `nproc`.
 
-One CPU core means maximum 1 value of system load, value bigger on 1 means your system is overloads. So if you have two cores the maximum load is 2, for four cores it's 4.
+One CPU core means maximum 1 value of system load, value bigger then 1 means your system is overloads. So if you have two cores the maximum load is 2, for four cores it's 4.
 
 Suppose you have two CPU cores and you have run backup script until system is not overload. If you set border on `2` `maxload` start work when overload is occurs, and users can experiencing the overload. To avoid this you must set border less then maximum load e.g. `1.9`.
 
+##Strategy of maxload
+`maxload` changing priority for controlled process during it executing. This change has impact to system process scheduling so it shouldn't happen frequently. Linux kernel calculates load averages from every 5 seconds. So 5 seconds is the highest frequency with `maxload` work.
+
+Here is the list of `maxload` frequency work in relative to max border:
+- load <= 10% border (checks every 15 seconds)
+- 11% border <= load <= 25% border (checks every 10 seconds)
+- load > 25% border (checks every 5 seconds)
+
+`maxload` starts reduce priority of controled process if system load is between 40-100% of set border and grows.
+
+`maxload` has four steps to get the lowest priority value of controled process.
+Here is the list how `maxload` changes priority of controled process:
+- LEVEL1: CPU nice 5, I/O priority 4
+- LEVEL2: CPU nice 10, I/O priority 5
+- LEVEL3: CPU nice 15, I/O priority 6
+- LEVEL4: CPU nice 19, I/O priority 7
+
+I/O value is given in best effort (be) scheduler.
+
+If system load exceeds the set border then `maxload` paused running of controled process. If system load will by reducing less then set border `maxload` starts executing of controlled process again.
+
+###Back to normal priority
+`maxload` is not only decrease priority but can also increase it when system load is low. This is not main goal of maxload but has it. The point is that the `maxload` is not check what priority it has when begins to executing itself.
+Example, when you run that command as `root`:
+```
+# nice -n 9 maxload 3.5 /root/script.sh
+```
+and next system load is growths to `3.4` and drops back to `0.1`, in effect the maxload increase priority (value of nice) equal to `0`.
+
+If `maxload` in this example run as normal user priority of script will by decreasing to `19` and not by growing even when system load is drops to `0.0`.
+
+`maxload` increase priority of controled process if system load is between 75-40% of set border and still decreasing. This case required to `maxload` must by executes as superuser (`root`).
+
+
+
 ##Demonstration video
-You can see how `maxload` works on this video [how works maxload](https://youtu.be/IwpuLnNWhrY)
+You can see how `maxload` works on this video: [How works maxload](https://youtu.be/IwpuLnNWhrY)
 
 ##FAQ
-###Which value of system load averages is used in `maxload`: 1, 5, 15 minutes?
-
-5 minutes.
+####Which value of system load averages is used in `maxload`: 1, 5, 15 minutes?
+1 minutes.
 
