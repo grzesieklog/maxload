@@ -55,7 +55,8 @@ If `maxload` in this example run as normal user priority of script will by decre
 
 `maxload` increase priority of controled process if system load is between 75-40% of set border and still decreasing. This case required to `maxload` must by executes as superuser (`root`).
 
-
+##Negative impact of pause executing process
+Pauses in executing process can make the process will not work correctly. Daemon is not good task for running via `maxload`. Generally linear tasks is good to run via `maxload`.
 
 ##Demonstration video
 You can see how `maxload` works on this video: [How works maxload](https://youtu.be/IwpuLnNWhrY)
