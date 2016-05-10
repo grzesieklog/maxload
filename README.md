@@ -63,4 +63,5 @@ You can see how `maxload` works on this video: [How works maxload](https://youtu
 ##FAQ
 ####Which value of system load averages is used in `maxload`: 1, 5, 15 minutes?
 1 minutes.
-
+####How `maxload` execute controlled process?
+By `fork()` function.
